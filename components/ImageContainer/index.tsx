@@ -30,14 +30,14 @@ export default function ImageContainer(props) {
   return (
     <ImageWrapper>
       <Image
-        src={props.imageUrl}
-        alt={props.altDescription}
+        src={props.url}
+        alt={props.alt}
         {...props}
       />
       <ImageCaption>
         <ProfileImage>
           <Image
-            src={props.userProfileImg}
+            src={props.userimg}
             alt={props.user}
             width={32}
             height={32}
