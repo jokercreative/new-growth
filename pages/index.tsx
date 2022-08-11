@@ -1,5 +1,18 @@
 import { useEffect, useState } from "react"
 import LoadMoreButton from '../components/LoadMoreButton'
+import ImageContainer from '../components/ImageContainer'
+import styled from "styled-components"
+
+const ImageListing = styled.div`
+  display: flex;
+`
+
+const Footer = styled.footer`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+`
 
 export default function Home() {
 
@@ -29,14 +42,26 @@ export default function Home() {
     return (
       <div>
         {data && data.length > 0 &&
-          <div>
-            {data.map((item, i) => {
-              return (<p>{item.id}</p>)
+          <ImageListing>
+            {data.map((image, i) => {
+              return (
+                <ImageContainer
+                  key={image.id}
+                  altDescription={image.alt_description}
+                  imageUrl={image.urls.small}
+                  width={image.width}
+                  height={image.height}
+                  user={image.user.username}
+                  userProfileImg={image.user.profile_image.small}
+                />
+              )
             })}
-          </div>
+          </ImageListing>
         }
 
-        <LoadMoreButton onClick={loadMore} />
+        <Footer>
+          <LoadMoreButton onClick={loadMore} />
+        </Footer>
       </div>
     )
   }
