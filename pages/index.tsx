@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import Image from "next/image"
+import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import LoadMoreButton from "../components/LoadMoreButton"
 import ImageContainer from "../components/ImageContainer"
-import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 
 const ImageListing = styled.div`
   padding: 0 10px;
@@ -32,12 +32,15 @@ export default function Home() {
 
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const [isLoadingMore, setLoadingMore] = useState(false);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
+    (page === 1) ? setLoading(true) : setLoadingMore(true)
     fetch(`/api/images?page=${page}`)
     .then(res => res.json())
     .then(data => {
+      (page === 1) ? setLoading(false) : setLoadingMore(false)
       setData((existingData) => [...existingData, ...data]);
     })
   }, [page]);
@@ -48,7 +51,7 @@ export default function Home() {
 
   if(isLoading) {
     return (
-      <p>loading</p>
+      <p>loading...</p>
     )
   } else {
     return (
@@ -62,18 +65,18 @@ export default function Home() {
             <ResponsiveMasonry
               columnsCountBreakPoints={{350: 1, 750: 2, 900: 3}}
             >
-              <Masonry gutter={20}>
+              <Masonry gutter="20px">
                 {data.map((image, i) => {
                   return (
                     <ImageContainer
                       key={image.id}
-                      altdescription={image.alt_description}
-                      imageUrl={image.urls.small}
+                      alt={image.alt_description}
+                      url={image.urls.small}
                       updated={image.updated_at}
                       width={image.width}
                       height={image.height}
                       user={image.user.username}
-                      userProfileImg={image.user.profile_image.small}
+                      userimg={image.user.profile_image.small}
                     />
                   )
                 })}
@@ -83,7 +86,11 @@ export default function Home() {
         }
 
         <Footer>
-          <LoadMoreButton onClick={loadMore} />
+          <>
+          {
+            isLoadingMore ? (<p>loading...</p>) : (<LoadMoreButton onClick={loadMore}/>)
+          }
+          </>
         </Footer>
       </div>
     )
