@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import Image from 'next/image'
+import { format, parseISO } from 'date-fns'
 
 const ImageWrapper = styled.div`
   position: relative;
@@ -11,7 +12,13 @@ const ImageCaption = styled.div`
   background: rgba(255, 255, 255, 0.6);
   display: flex;
   align-items: center;
-  padding: 10px;
+  justify-content: space-between;
+  padding: 5px 10px;
+`
+
+const Profile = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 const ProfileImage = styled.div`
@@ -26,6 +33,10 @@ const ProfileName = styled.div`
   font-size: 14px;
 `
 
+const ImageDate = styled.p`
+  font-size: 12px;
+`
+
 export default function ImageContainer(props) {
   return (
     <ImageWrapper>
@@ -35,15 +46,18 @@ export default function ImageContainer(props) {
         {...props}
       />
       <ImageCaption>
-        <ProfileImage>
-          <Image
-            src={props.userimg}
-            alt={props.user}
-            width={32}
-            height={32}
-            />
-        </ProfileImage>
-        <ProfileName>{props.user}</ProfileName>
+        <Profile>
+          <ProfileImage>
+            <Image
+              src={props.userimg}
+              alt={props.user}
+              width={32}
+              height={32}
+              />
+          </ProfileImage>
+          <ProfileName>{props.user}</ProfileName>
+        </Profile>
+        <ImageDate>{format(parseISO(props.updated), 'dd MMM yyyy')}</ImageDate>
       </ImageCaption>
     </ImageWrapper>
   )

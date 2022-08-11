@@ -7,6 +7,8 @@ import ImageContainer from "../components/ImageContainer"
 
 const ImageListing = styled.div`
   padding: 0 10px;
+  max-width: 1080px;
+  margin: 0 auto;
 `
 
 const Footer = styled.footer`
@@ -21,6 +23,8 @@ const Header = styled.header`
   align-items: center;
   justify-content: flex-start;
   padding: 20px;
+  max-width: 1080px;
+  margin: 0 auto;
 
   h1 {
     font-size: 18px;
