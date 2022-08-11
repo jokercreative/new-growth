@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import LoadMoreButton from '../components/LoadMoreButton'
 
 export default function Home() {
 
@@ -35,7 +36,7 @@ export default function Home() {
           </div>
         }
 
-        <button onClick={loadMore}>load more</button>
+        <LoadMoreButton onClick={loadMore} />
       </div>
     )
   }
