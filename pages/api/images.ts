@@ -1,3 +1,4 @@
+// add API_KEY into .env file
 export default async function handler(req, res) {
   const query = req.query;
   const { page } = query;
