@@ -21,7 +21,7 @@ const Footer = styled.footer`
 const Header = styled.header`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   padding: 20px;
   max-width: 1080px;
   margin: 0 auto;
@@ -32,25 +32,50 @@ const Header = styled.header`
   }
 `
 
+const HeaderLeft = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const HeaderRight = styled.div`
+
+`
+
 export default function Home() {
 
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [isLoadingMore, setLoadingMore] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('blue');
+  const [query, setQuery] = useState(searchQuery);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
     (page === 1) ? setLoading(true) : setLoadingMore(true)
-    fetch(`/api/images?page=${page}`)
+    fetch(`/api/images?page=${page}&query=${query}`)
     .then(res => res.json())
     .then(data => {
-      (page === 1) ? setLoading(false) : setLoadingMore(false)
-      setData((existingData) => [...existingData, ...data]);
+      if (page === 1) {
+        setLoading(false)
+        setData(data)
+      } else {
+        setLoadingMore(false)
+        setData((existingData) => [...existingData, ...data])
+      }
     })
-  }, [page]);
+  }, [page, query]);
 
   const loadMore = () => {
     setPage(page+1)
+  }
+
+  const handleSearch = () => {
+    setPage(1)
+    setQuery(searchQuery)
+  }
+
+  const onInputChange = (evt) => {
+    setSearchQuery(evt.target.value)
   }
 
   if(isLoading) {
@@ -61,8 +86,22 @@ export default function Home() {
     return (
       <div>
         <Header>
-          <Image src="/upgrowth.svg" alt="Upgrowth" width={120} height={40}/>
-          <h1>Dev Challange</h1>
+          <HeaderLeft>
+            <Image src="/upgrowth.svg" alt="Upgrowth" width={120} height={40}/>
+            <h1>Dev Challange</h1>
+          </HeaderLeft>
+          <HeaderRight>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={onInputChange}
+            />
+            <button
+              onClick={handleSearch}
+            >
+              Search
+            </button>
+          </HeaderRight>
         </Header>
         {data && data.length > 0 &&
           <ImageListing>
