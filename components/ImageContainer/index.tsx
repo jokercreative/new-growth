@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import Image from 'next/image'
+import Link from 'next/link'
 import { format, parseISO } from 'date-fns'
 
 const ImageWrapper = styled.div`
@@ -55,7 +56,9 @@ export default function ImageContainer(props) {
               height={32}
               />
           </ProfileImage>
-          <ProfileName>{props.user}</ProfileName>
+          <ProfileName>
+            <Link href={`/user/${props.user}`}>{props.user}</Link>
+          </ProfileName>
         </Profile>
         <ImageDate>{format(parseISO(props.updated), 'dd MMM yyyy')}</ImageDate>
       </ImageCaption>
